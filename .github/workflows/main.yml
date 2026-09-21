@@ -28,6 +28,12 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Disable Code Signing in Xcode Project
+        run: |
+          cd ios
+          codesign_settings="CODE_SIGNING_REQUIRED = NO; CODE_SIGNING_ALLOWED = NO; CODE_SIGN_IDENTITY = \"\";"
+          sed -i '' "s/PRODUCT_BUNDLE_IDENTIFIER = com.example.helloworld;/PRODUCT_BUNDLE_IDENTIFIER = com.example.helloworld; $codesign_settings/g" Runner.xcodeproj/project.pbxproj
+
       - name: Build iOS App (No Codesign)
         run: flutter build ios --release --no-codesign
 
