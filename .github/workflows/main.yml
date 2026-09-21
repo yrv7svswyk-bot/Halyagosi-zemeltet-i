@@ -28,17 +28,20 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build iOS App (No Codesign)
-        run: flutter build ios --release --no-codesign
-        env:
-          CODE_SIGNING_ALLOWED: "NO"
-          CODE_SIGNING_REQUIRED: "NO"
-          CODE_SIGN_IDENTITY: ""
+      - name: Clean Build Directory
+        run: flutter clean
+
+      - name: Build iOS App without Codesign & Provisioning
+        run: |
+          flutter build ios --release --no-codesign --config-only
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release -sdk iphoneos CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 
       - name: Create Payload and Package IPA
         run: |
           mkdir -p Payload
-          cp -r build/ios/iphoneos/Runner.app Payload/
+          # Megkeressük a lefordított .app fájlt bárhol is legyen
+          find build/ios/iphoneos -name "*.app" -exec cp -r {} Payload/ \;
           zip -r Runner.ipa Payload
 
       - name: Upload IPA Artifact
