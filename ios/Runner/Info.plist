@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+<key>NSPhotoLibraryUsageDescription</key>
+	<string>A halak fotóinak kiválasztásához szükségünk van a galéria elérésére.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>A halakról készült fotók rögzítéséhez szükségünk van a kamerára.</string>
 </dict>
 </plist>
